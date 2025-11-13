@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - minio
+    environment:
+      - DATABASE_URL=postgres://literarium:senha123@db:5432/literarium
+      - AWS_ACCESS_KEY_ID=admin
+      - AWS_SECRET_ACCESS_KEY=password123
+      - AWS_STORAGE_BUCKET_NAME=literarium-media
+      - AWS_S3_ENDPOINT_URL=http://minio:9000
+
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=literarium
+      - POSTGRES_USER=literarium
+      - POSTGRES_PASSWORD=senha123
+
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password123
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+
+  # Serviço auxiliar que roda uma vez só para criar a pasta no MinIO
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      echo 'Aguardando MinIO iniciar...';
+      until /usr/bin/mc alias set myminio http://minio:9000 admin password123; do
+        echo 'MinIO indisponível. Tentando novamente em 1s...';
+        sleep 1;
+      done;
+      echo 'MinIO conectado! Criando bucket...';
+      /usr/bin/mc mb --ignore-existing myminio/literarium-media;
+      /usr/bin/mc anonymous set public myminio/literarium-media;
+      echo 'Bucket criado e público!';
+      exit 0;
+      "
+
+volumes:
+  postgres_data:
+  minio_data:

@@ -6,5 +6,3 @@ dj-database-url
 django-unfold
 django-import-export
 Pillow
-django-storages
-boto3

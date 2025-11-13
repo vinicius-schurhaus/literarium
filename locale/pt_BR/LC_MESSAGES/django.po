@@ -1,0 +1,28 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Search apps and models..."
+msgstr "Buscar menus..."
+
+msgid "Type to search"
+msgstr "Digite para pesquisar"
+
+msgid "No results found"
+msgstr "Nenhum resultado encontrado"
+
+msgid "This page yielded into no results. Create a new item or reset your filters."
+msgstr "Nenhum item encontrado. Crie um novo ou limpe os filtros."
+
+msgid "Search"
+msgstr "Pesquisar"
+
+msgid "Filter"
+msgstr "Filtrar"
+
+msgid "Actions"
+msgstr "Ações"
+
+msgid "Select all"
+msgstr "Selecionar todos"

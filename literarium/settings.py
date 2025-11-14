@@ -21,28 +21,29 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    "unfold",                  # Tema Admin (Sempre antes do admin nativo)
+    "unfold",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "import_export",           # Relatórios
-    "core",                    # Seu App
+    "import_export",
+    "core",
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'django.middleware.locale.LocaleMiddleware',  <-- REMOVA OU COMENTE ESTA LINHA
+    # 'django.middleware.locale.LocaleMiddleware', # <--- COMENTADO PARA FORÇAR PT-BR
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 ROOT_URLCONF = 'literarium.urls'
 
 TEMPLATES = [
@@ -86,7 +87,6 @@ TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
-# Configuração para forçar traduções manuais (Unfold)
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),
 ]

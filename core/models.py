@@ -64,11 +64,20 @@ class Emprestimo(models.Model):
         if not self.data_devolucao_prevista:
             self.data_devolucao_prevista = timezone.now().date() + timedelta(days=7)
         
-        # Diminui estoque se for novo empréstimo
-        if not self.pk and self.livro.quantidade > 0:
-            self.livro.quantidade -= 1
-            self.livro.save()
-        
+        if not self.pk:
+            if self.livro.quantidade > 0:
+                self.livro.quantidade -= 1
+                self.livro.save()
+        else:
+            emprestimo_antigo = Emprestimo.objects.get(pk=self.pk)
+            
+            if emprestimo_antigo.status == 'ABERTO' and self.status == 'DEVOLVIDO':
+                self.livro.quantidade += 1
+                self.livro.save()
+                
+                if not self.data_devolucao_real:
+                    self.data_devolucao_real = timezone.now().date()
+
         super().save(*args, **kwargs)
 
     class Meta:

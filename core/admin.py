@@ -1,37 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from unfold.admin import ModelAdmin, StackedInline
+from unfold.admin import ModelAdmin
 from django.utils.html import format_html
 from .models import Autor, Genero, Livro, Aluno, Emprestimo
 
 admin.site.unregister(User)
 
-# --- CONFIGURAÇÃO DO INLINE ---
-class AlunoInline(StackedInline):
-    model = Aluno
-    can_delete = False
-    verbose_name_plural = 'Dados Escolares (Aluno)'
-    fk_name = 'usuario'
-
-# --- CONFIGURAÇÃO DO USUÁRIO ---
 @admin.register(User)
 class UserAdmin(BaseUserAdmin, ModelAdmin):
-    list_display = ('username', 'first_name', 'email', 'get_turma', 'is_staff')
-    search_fields = ['username', 'first_name', 'email', 'aluno_perfil__matricula']
-
-    def get_inlines(self, request, obj=None):
-        if not obj:
-            return []
-        return [AlunoInline] 
-
-    def get_turma(self, instance):
-        if hasattr(instance, 'aluno_perfil'):
-            return instance.aluno_perfil.turma
-        return "-"
-    get_turma.short_description = 'Turma'
-
-# --- OUTROS CADASTROS ---
+    search_fields = ['username', 'first_name', 'email']
 
 @admin.register(Autor)
 class AutorAdmin(ModelAdmin):
@@ -41,16 +19,11 @@ class AutorAdmin(ModelAdmin):
 class GeneroAdmin(ModelAdmin):
     search_fields = ['nome']
 
-# Mantivemos o AlunoAdmin separado caso precise corrigir algo isolado
 @admin.register(Aluno)
 class AlunoAdmin(ModelAdmin):
-    list_display = ('matricula', 'turma', 'get_nome')
-    search_fields = ('matricula', 'usuario__first_name')
+    list_display = ('matricula', 'usuario', 'turma')
+    search_fields = ('matricula', 'usuario__first_name', 'usuario__username')
     autocomplete_fields = ['usuario']
-
-    def get_nome(self, obj):
-        return obj.usuario.first_name
-    get_nome.short_description = 'Nome'
 
 @admin.register(Livro)
 class LivroAdmin(ModelAdmin):

@@ -4,7 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Literarium{% endblock %}</title>
+
+    
     <script src="https://cdn.tailwindcss.com"></script>
+
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
     <script>
       tailwind.config = {
         theme: {
@@ -17,94 +23,209 @@
                 900: "#7c2d12", 950: "#431407",
               },
             },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+            },
           },
         },
       };
     </script>
     <style>
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+      body { font-family: 'Inter', sans-serif; }
+
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        font-size: 24px;
+        line-height: 1;
       }
-      .form-logout-button {
-        background: none;
-        border: none;
-        padding: 0;
-        cursor: pointer;
-        display: block;
-        width: 100%;
-        text-align: left;
+
+      .mobile-menu-content {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+      }
+      .mobile-menu-open {
+        max-height: 500px;
+        opacity: 1;
+      }
+
+      .icon-transition {
+        transition: all 0.3s ease-in-out;
       }
     </style>
   </head>
-  <body class="bg-gray-50">
-    <nav class="bg-white border-b border-gray-200 sticky top-0 z-10">
-      <div class="mx-auto px-6">
-        <div class="flex justify-between h-16">
-          <div class="flex items-center space-x-8">
-            <a href="{% url 'catalogo' %}" class="flex items-center space-x-2">
-              <svg class="h-6 w-6 text-primary-600" width="24" height="24" viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M33.5 19.5417C33.5 16.5801 32.3235 13.7398 30.2293 11.6456C28.1352 9.55148 25.2949 8.375 22.3333 8.375H5.58331V50.25H25.125C27.3462 50.25 29.4764 51.1324 31.047 52.703C32.6176 54.2736 33.5 56.4038 33.5 58.625M33.5 19.5417V58.625M33.5 19.5417C33.5 16.5801 34.6765 13.7398 36.7706 11.6456C38.8648 9.55148 41.7051 8.375 44.6666 8.375H61.4166V50.25H41.875C39.6538 50.25 37.5236 51.1324 35.953 52.703C34.3823 54.2736 33.5 56.4038 33.5 58.625" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <span class="text-lg font-semibold text-gray-900">Literarium</span>
-            </a>
-            <div class="flex space-x-1">
-              <a href="{% url 'catalogo' %}" class="{% if request.resolver_match.url_name == 'catalogo' %}text-gray-900 border-b-2 border-primary-600{% else %}text-gray-600 hover:text-gray-900{% endif %} px-3 py-2 text-sm font-medium">
-                Catálogo
-              </a>
-              <a href="{% url 'meus_emprestimos' %}" class="{% if request.resolver_match.url_name == 'meus_emprestimos' %}text-gray-900 border-b-2 border-primary-600{% else %}text-gray-600 hover:text-gray-900{% endif %} px-3 py-2 text-sm font-medium">
-                Meus Empréstimos
-              </a>
-            </div>
+  <body class="bg-gray-50 text-slate-800 antialiased flex flex-col min-h-screen">
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-30">
+      <div class="w-full px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
+
+          
+          <div class="flex-shrink-0 flex items-center gap-2">
+             <svg class="h-8 w-8 text-primary-600" width="24" height="24" viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M33.5 19.5417C33.5 16.5801 32.3235 13.7398 30.2293 11.6456C28.1352 9.55148 25.2949 8.375 22.3333 8.375H5.58331V50.25H25.125C27.3462 50.25 29.4764 51.1324 31.047 52.703C32.6176 54.2736 33.5 56.4038 33.5 58.625M33.5 19.5417V58.625M33.5 19.5417C33.5 16.5801 34.6765 13.7398 36.7706 11.6456C38.8648 9.55148 41.7051 8.375 44.6666 8.375H61.4166V50.25H41.875C39.6538 50.25 37.5236 51.1324 35.953 52.703C34.3823 54.2736 33.5 56.4038 33.5 58.625" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+             </svg>
+            <span class="text-xl font-bold text-gray-900 tracking-tight block">Literarium</span>
           </div>
-          <div class="flex items-center">
-            {% if user.is_authenticated %}
-            <div class="relative">
-              <button type="button" class="flex items-center space-x-2 text-sm focus:outline-none" id="user-menu-button" onclick="toggleUserMenu()">
-                <span class="text-gray-700">{{ user.first_name|default:user.username }}</span>
-                <svg class="h-8 w-8 text-gray-500 hover:text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </button>
-              <div id="user-menu" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
-                <div class="px-4 py-3 border-b border-gray-100">
-                  <p class="text-sm font-medium text-gray-900">{{ user.get_full_name|default:user.username }}</p>
-                  <p class="text-xs text-gray-500 truncate">{{ user.email }}</p>
-                </div>
-                {% if user.is_staff %}
-                <a href="/admin/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Administração</a>
-                {% endif %}
-                
-                <form method="post" action="{% url 'logout' %}" class="w-full">
-                    {% csrf_token %}
-                    <button type="submit" class="form-logout-button px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                        Sair
-                    </button>
-                </form>
-                </div>
-            </div>
-            {% else %}
-            <a href="{% url 'login' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
-              Entrar
+
+          
+          <div class="hidden md:flex flex-1 justify-center items-center space-x-8 h-full">
+            <a href="{% url 'catalogo' %}" class="h-full inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 transition-colors {% if request.resolver_match.url_name == 'catalogo' %}border-primary-500 text-gray-900{% else %}border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700{% endif %}">
+              Catálogo
             </a>
+            <a href="{% url 'meus_emprestimos' %}" class="h-full inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 transition-colors {% if request.resolver_match.url_name == 'meus_emprestimos' %}border-primary-500 text-gray-900{% else %}border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700{% endif %}">
+              Meus Empréstimos
+            </a>
+          </div>
+
+          
+          <div class="hidden md:flex items-center gap-4">
+            {% if user.is_authenticated %}
+                <div class="relative">
+                    
+                    <button onclick="toggleDesktopProfile()" id="desktop-user-btn" class="flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors focus:outline-none p-1 rounded-lg hover:bg-gray-50">
+                       <span class="material-symbols-outlined" style="font-size: 24px;">person</span>
+                       <span class="text-sm font-medium">{{ user.get_full_name|default:user.username }}</span>
+                       
+                       <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+
+                    
+                    <div id="desktop-profile-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 py-1 z-50 transform origin-top-right transition-all duration-200">
+                        {% if user.is_staff %}
+                        <a href="/admin/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Administração</a>
+                        {% endif %}
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">Sair</button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <a href="{% url 'login' %}" class="text-sm font-medium text-primary-600 hover:text-primary-500">Entrar</a>
             {% endif %}
+          </div>
+
+          
+          <div class="flex items-center md:hidden">
+            <button type="button" onclick="toggleMobileMenu()" class="relative inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none z-50 w-10 h-10">
+              <span class="sr-only">Abrir menu</span>
+
+              
+              <svg id="icon-menu" class="icon-transition absolute h-6 w-6 transform opacity-100 scale-100" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+
+              
+              <svg id="icon-close" class="icon-transition absolute h-6 w-6 transform opacity-0 scale-75 rotate-90" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
+
+      
+      <div class="md:hidden bg-white border-t border-gray-200 mobile-menu-content" id="mobile-menu">
+        <div class="space-y-1 px-4 pt-3 pb-3">
+          <a href="{% url 'catalogo' %}" class="block px-3 py-2 rounded-lg text-base font-medium transition-colors {% if request.resolver_match.url_name == 'catalogo' %}bg-primary-50 text-primary-700{% else %}text-gray-600 hover:bg-gray-50 hover:text-gray-900{% endif %}">
+              Catálogo
+          </a>
+          <a href="{% url 'meus_emprestimos' %}" class="block px-3 py-2 rounded-lg text-base font-medium transition-colors {% if request.resolver_match.url_name == 'meus_emprestimos' %}bg-primary-50 text-primary-700{% else %}text-gray-600 hover:bg-gray-50 hover:text-gray-900{% endif %}">
+              Meus Empréstimos
+          </a>
+        </div>
+
+        {% if user.is_authenticated %}
+        <div class="border-t border-gray-200 pt-4 pb-4">
+            
+            <button onclick="toggleMobileProfile()" class="w-full flex items-center justify-between px-6 py-2 text-gray-600 hover:bg-gray-50 focus:outline-none transition-colors">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-gray-600">person</span>
+                    
+                    <span class="text-base font-medium text-gray-800">{{ user.get_full_name|default:user.username }}</span>
+                </div>
+                <svg id="profile-arrow" class="h-5 w-5 text-gray-400 transform transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+
+            
+            <div id="mobile-profile-details" class="hidden px-6 pb-2 pt-2 bg-gray-50 border-t border-gray-100 mt-2">
+                <div class="space-y-1 pt-2">
+                    {% if user.is_staff %}
+                        <a href="/admin/" class="block px-3 py-2 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-200">Administração</a>
+                    {% endif %}
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="block w-full text-left px-3 py-2 rounded-lg text-base font-medium text-red-600 hover:bg-red-50">Sair</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="border-t border-gray-200 pt-4 pb-4 px-4">
+            <a href="{% url 'login' %}" class="block w-full text-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700">
+                Entrar
+            </a>
+        </div>
+        {% endif %}
+      </div>
     </nav>
 
-    <main class="py-8">{% block content %}{% endblock %}</main>
+    <main class="flex-grow py-8">{% block content %}{% endblock %}</main>
 
     <script>
-      function toggleUserMenu() {
-        const menu = document.getElementById("user-menu");
-        menu.classList.toggle("hidden");
-      }
-      document.addEventListener("click", function (event) {
-        const button = document.getElementById("user-menu-button");
-        const menu = document.getElementById("user-menu");
-        if (button && menu && !button.contains(event.target) && !menu.contains(event.target)) {
-          menu.classList.add("hidden");
+
+      function toggleMobileMenu() {
+        const menu = document.getElementById("mobile-menu");
+        const iconMenu = document.getElementById("icon-menu");
+        const iconClose = document.getElementById("icon-close");
+
+        menu.classList.toggle("mobile-menu-open");
+
+        if (menu.classList.contains("mobile-menu-open")) {
+            iconMenu.classList.remove("opacity-100", "scale-100");
+            iconMenu.classList.add("opacity-0", "scale-75", "-rotate-90");
+
+            iconClose.classList.remove("opacity-0", "scale-75", "rotate-90");
+            iconClose.classList.add("opacity-100", "scale-100", "rotate-0");
+        } else {
+            iconMenu.classList.remove("opacity-0", "scale-75", "-rotate-90");
+            iconMenu.classList.add("opacity-100", "scale-100", "rotate-0");
+
+            iconClose.classList.remove("opacity-100", "scale-100", "rotate-0");
+            iconClose.classList.add("opacity-0", "scale-75", "rotate-90");
         }
+      }
+
+      function toggleMobileProfile() {
+          const details = document.getElementById("mobile-profile-details");
+          const arrow = document.getElementById("profile-arrow");
+
+          details.classList.toggle("hidden");
+
+          if (details.classList.contains("hidden")) {
+              arrow.style.transform = "rotate(0deg)";
+          } else {
+              arrow.style.transform = "rotate(180deg)";
+          }
+      }
+
+      function toggleDesktopProfile() {
+          const menu = document.getElementById("desktop-profile-menu");
+          menu.classList.toggle("hidden");
+      }
+
+      window.addEventListener('click', function(e) {
+
+          const desktopBtn = document.getElementById('desktop-user-btn');
+          const desktopMenu = document.getElementById('desktop-profile-menu');
+
+          if (desktopBtn && desktopMenu && !desktopBtn.contains(e.target) && !desktopMenu.contains(e.target)) {
+              desktopMenu.classList.add('hidden');
+          }
       });
     </script>
   </body>

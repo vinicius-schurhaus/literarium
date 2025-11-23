@@ -40,7 +40,7 @@ class LivroAdmin(ModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
-        # Remove a lixeira do campo Gênero
+
         if 'genero' in form.base_fields:
             form.base_fields['genero'].widget.can_delete_related = False
         return form
@@ -51,16 +51,13 @@ class EmprestimoAdmin(ModelAdmin):
     list_filter = ('status', 'data_emprestimo')
     autocomplete_fields = ['livro', 'aluno']
 
-    # --- NOVA PROTEÇÃO AQUI ---
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
-        
-        # Remove a lixeira do campo Livro
+
         if 'livro' in form.base_fields:
             form.base_fields['livro'].widget.can_delete_related = False
-            
-        # Remove a lixeira do campo Aluno
+
         if 'aluno' in form.base_fields:
             form.base_fields['aluno'].widget.can_delete_related = False
-            
+
         return form

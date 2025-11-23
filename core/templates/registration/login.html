@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Entrar - Literarium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#fff7ed", 100: "#ffedd5", 200: "#fed7aa",
+                300: "#fdba74", 400: "#fb923c", 500: "#f97316",
+                600: "#ea580c", 700: "#c2410c", 800: "#9a3412",
+                900: "#7c2d12", 950: "#431407",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      
+      <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="flex justify-center">
+          <svg class="h-12 w-12 text-primary-600" width="67" height="67" viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M33.5 19.5417C33.5 16.5801 32.3235 13.7398 30.2293 11.6456C28.1352 9.55148 25.2949 8.375 22.3333 8.375H5.58331V50.25H25.125C27.3462 50.25 29.4764 51.1324 31.047 52.703C32.6176 54.2736 33.5 56.4038 33.5 58.625M33.5 19.5417V58.625M33.5 19.5417C33.5 16.5801 34.6765 13.7398 36.7706 11.6456C38.8648 9.55148 41.7051 8.375 44.6666 8.375H61.4166V50.25H41.875C39.6538 50.25 37.5236 51.1324 35.953 52.703C34.3823 54.2736 33.5 56.4038 33.5 58.625" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Bem-vindo ao Literarium
+        </h2>
+      </div>
+
+      <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <form class="space-y-6" method="post">
+            {% csrf_token %} 
+            
+            {% if form.non_field_errors %}
+            <div class="rounded-md bg-red-50 p-4">
+              <div class="flex">
+                <div class="ml-3">
+                  <p class="text-sm text-red-700">
+                    Usuário ou senha inválidos. Tente novamente.
+                  </p>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            <div>
+              <label for="id_username" class="block text-sm font-medium text-gray-700">
+                Nome de usuário
+              </label>
+              <div class="mt-1">
+                <input id="id_username" name="username" type="text" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"/>
+              </div>
+            </div>
+
+            <div>
+              <label for="id_password" class="block text-sm font-medium text-gray-700">
+                Senha
+              </label>
+              <div class="mt-1">
+                <input id="id_password" name="password" type="password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"/>
+              </div>
+            </div>
+
+            <div>
+              <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                Entrar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</body>
+</html>

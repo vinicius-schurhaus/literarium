@@ -1,0 +1,138 @@
+{% extends 'app_base.html' %} 
+
+{% block title %}Meus Empréstimos - Literarium{% endblock %} 
+
+{% block content %}
+<div class="mx-auto px-6 max-w-7xl">
+  <div class="mb-6">
+    <h1 class="text-2xl font-semibold text-gray-900">Meus Empréstimos</h1>
+  </div>
+
+  {% if emprestimos %}
+  <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+    <div class="divide-y divide-gray-200">
+      {% for emprestimo in emprestimos %}
+      <div class="p-4 hover:bg-gray-50 transition-colors">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0">
+            {% if emprestimo.livro.capa %}
+            <img
+              src="{{ emprestimo.livro.capa.url }}"
+              alt="{{ emprestimo.livro.titulo }}"
+              class="h-24 w-16 object-cover rounded border border-gray-200"
+            />
+            {% else %}
+            <div
+              class="h-24 w-16 bg-gray-100 rounded border border-gray-200 flex items-center justify-center"
+            >
+              <svg
+                class="h-8 w-8 text-gray-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                ></path>
+              </svg>
+            </div>
+            {% endif %}
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-sm font-medium text-gray-900">
+              {{ emprestimo.livro.titulo }}
+            </h3>
+            <p class="text-sm text-gray-600 mt-0.5">
+              {{ emprestimo.livro.autor.nome }}
+            </p>
+            <div class="mt-2 flex flex-wrap gap-3 text-xs text-gray-500">
+              <div class="flex items-center">
+                <svg
+                  class="mr-1.5 h-4 w-4 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  ></path>
+                </svg>
+                Emprestado em {{ emprestimo.data_emprestimo|date:"d/m/Y" }}
+              </div>
+              <div class="flex items-center">
+                <svg
+                  class="mr-1.5 h-4 w-4 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+                Devolução prevista: {{ emprestimo.data_devolucao_prevista|date:"d/m/Y" }}
+              </div>
+            </div>
+          </div>
+          <div class="flex-shrink-0">
+            {% if emprestimo.status == 'ABERTO' %}
+            <span
+              class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
+            >
+              Em Aberto
+            </span>
+            {% else %}
+            <span
+              class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
+            >
+              Devolvido
+            </span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% else %}
+  <div class="text-center py-16">
+    <div
+      class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4"
+    >
+      <svg
+        class="h-8 w-8 text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+        ></path>
+      </svg>
+    </div>
+    <h3 class="text-base font-medium text-gray-900 mb-1">Nenhum empréstimo</h3>
+    <p class="text-sm text-gray-500 mb-6">
+      Você ainda não possui empréstimos registrados.
+    </p>
+    <a
+      href="{% url 'catalogo' %}"
+      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700"
+    >
+      Explorar Catálogo
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

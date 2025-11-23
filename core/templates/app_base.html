@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Literarium{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#fff7ed", 100: "#ffedd5", 200: "#fed7aa",
+                300: "#fdba74", 400: "#fb923c", 500: "#f97316",
+                600: "#ea580c", 700: "#c2410c", 800: "#9a3412",
+                900: "#7c2d12", 950: "#431407",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      }
+      .form-logout-button {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: block;
+        width: 100%;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <div class="mx-auto px-6">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center space-x-8">
+            <a href="{% url 'catalogo' %}" class="flex items-center space-x-2">
+              <svg class="h-6 w-6 text-primary-600" width="24" height="24" viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M33.5 19.5417C33.5 16.5801 32.3235 13.7398 30.2293 11.6456C28.1352 9.55148 25.2949 8.375 22.3333 8.375H5.58331V50.25H25.125C27.3462 50.25 29.4764 51.1324 31.047 52.703C32.6176 54.2736 33.5 56.4038 33.5 58.625M33.5 19.5417V58.625M33.5 19.5417C33.5 16.5801 34.6765 13.7398 36.7706 11.6456C38.8648 9.55148 41.7051 8.375 44.6666 8.375H61.4166V50.25H41.875C39.6538 50.25 37.5236 51.1324 35.953 52.703C34.3823 54.2736 33.5 56.4038 33.5 58.625" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="text-lg font-semibold text-gray-900">Literarium</span>
+            </a>
+            <div class="flex space-x-1">
+              <a href="{% url 'catalogo' %}" class="{% if request.resolver_match.url_name == 'catalogo' %}text-gray-900 border-b-2 border-primary-600{% else %}text-gray-600 hover:text-gray-900{% endif %} px-3 py-2 text-sm font-medium">
+                Catálogo
+              </a>
+              <a href="{% url 'meus_emprestimos' %}" class="{% if request.resolver_match.url_name == 'meus_emprestimos' %}text-gray-900 border-b-2 border-primary-600{% else %}text-gray-600 hover:text-gray-900{% endif %} px-3 py-2 text-sm font-medium">
+                Meus Empréstimos
+              </a>
+            </div>
+          </div>
+          <div class="flex items-center">
+            {% if user.is_authenticated %}
+            <div class="relative">
+              <button type="button" class="flex items-center space-x-2 text-sm focus:outline-none" id="user-menu-button" onclick="toggleUserMenu()">
+                <span class="text-gray-700">{{ user.first_name|default:user.username }}</span>
+                <svg class="h-8 w-8 text-gray-500 hover:text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </button>
+              <div id="user-menu" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+                <div class="px-4 py-3 border-b border-gray-100">
+                  <p class="text-sm font-medium text-gray-900">{{ user.get_full_name|default:user.username }}</p>
+                  <p class="text-xs text-gray-500 truncate">{{ user.email }}</p>
+                </div>
+                {% if user.is_staff %}
+                <a href="/admin/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Administração</a>
+                {% endif %}
+                
+                <form method="post" action="{% url 'logout' %}" class="w-full">
+                    {% csrf_token %}
+                    <button type="submit" class="form-logout-button px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        Sair
+                    </button>
+                </form>
+                </div>
+            </div>
+            {% else %}
+            <a href="{% url 'login' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+              Entrar
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="py-8">{% block content %}{% endblock %}</main>
+
+    <script>
+      function toggleUserMenu() {
+        const menu = document.getElementById("user-menu");
+        menu.classList.toggle("hidden");
+      }
+      document.addEventListener("click", function (event) {
+        const button = document.getElementById("user-menu-button");
+        const menu = document.getElementById("user-menu");
+        if (button && menu && !button.contains(event.target) && !menu.contains(event.target)) {
+          menu.classList.add("hidden");
+        }
+      });
+    </script>
+  </body>
+</html>

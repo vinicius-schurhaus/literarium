@@ -28,7 +28,7 @@ class AlunoAdmin(ModelAdmin):
 @admin.register(Livro)
 class LivroAdmin(ModelAdmin):
     list_display = ('titulo', 'autor', 'quantidade', 'ver_capa')
-    search_fields = ('titulo',)
+    search_fields = ('titulo', 'autor__nome')
     list_filter = ('genero',)
     autocomplete_fields = ['autor', 'genero']
 
@@ -38,8 +38,29 @@ class LivroAdmin(ModelAdmin):
         return "-"
     ver_capa.short_description = 'Capa'
 
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        # Remove a lixeira do campo Gênero
+        if 'genero' in form.base_fields:
+            form.base_fields['genero'].widget.can_delete_related = False
+        return form
+
 @admin.register(Emprestimo)
 class EmprestimoAdmin(ModelAdmin):
     list_display = ('livro', 'aluno', 'data_devolucao_prevista', 'status')
     list_filter = ('status', 'data_emprestimo')
     autocomplete_fields = ['livro', 'aluno']
+
+    # --- NOVA PROTEÇÃO AQUI ---
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        
+        # Remove a lixeira do campo Livro
+        if 'livro' in form.base_fields:
+            form.base_fields['livro'].widget.can_delete_related = False
+            
+        # Remove a lixeira do campo Aluno
+        if 'aluno' in form.base_fields:
+            form.base_fields['aluno'].widget.can_delete_related = False
+            
+        return form

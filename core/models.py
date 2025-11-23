@@ -29,7 +29,8 @@ class Aluno(models.Model):
     turma = models.CharField(max_length=50)
     
     def __str__(self): 
-        return f"{self.usuario.first_name}"
+        # Retorna o Nome. Se não tiver nome cadastrado, retorna o Login (username)
+        return self.usuario.first_name if self.usuario.first_name else self.usuario.username
 
     class Meta:
         verbose_name = "Aluno"
@@ -40,6 +41,7 @@ class Livro(models.Model):
     autor = models.ForeignKey(Autor, on_delete=models.CASCADE)
     genero = models.ForeignKey(Genero, on_delete=models.SET_NULL, null=True)
     quantidade = models.PositiveIntegerField(default=1)
+    sinopse = models.TextField(blank=True, null=True, verbose_name="Sinopse")
     capa = models.ImageField(upload_to='capas/', null=True, blank=True)
     data_cadastro = models.DateTimeField(auto_now_add=True)
     
@@ -59,6 +61,11 @@ class Emprestimo(models.Model):
     data_devolucao_prevista = models.DateField(blank=True, null=True)
     data_devolucao_real = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS, default='ABERTO')
+
+    # --- AQUI ESTÁ A CORREÇÃO ---
+    def __str__(self):
+        # Exibe: "Nome do Livro - Nome do Aluno"
+        return f"{self.livro.titulo} - {self.aluno}"
 
     def save(self, *args, **kwargs):
         if not self.data_devolucao_prevista:

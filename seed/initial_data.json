@@ -1,0 +1,101 @@
+[
+{
+  "model": "core.genero",
+  "pk": 1,
+  "fields": {
+    "nome": "Vestibular"
+  }
+},
+{
+  "model": "core.genero",
+  "pk": 2,
+  "fields": {
+    "nome": "Clássico"
+  }
+},
+{
+  "model": "core.genero",
+  "pk": 3,
+  "fields": {
+    "nome": "Fantasia"
+  }
+},
+{
+  "model": "core.genero",
+  "pk": 4,
+  "fields": {
+    "nome": "Mistério"
+  }
+},
+{
+  "model": "core.autor",
+  "pk": 1,
+  "fields": {
+    "nome": "Bram Stoker"
+  }
+},
+{
+  "model": "core.autor",
+  "pk": 2,
+  "fields": {
+    "nome": "J. K. Rowling"
+  }
+},
+{
+  "model": "core.autor",
+  "pk": 3,
+  "fields": {
+    "nome": "Arthur Conan Doyle"
+  }
+},
+{
+  "model": "core.turma",
+  "pk": 1,
+  "fields": {
+    "nome": "1º Ano",
+    "exibe_conteudo_explicito": false
+  }
+},
+{
+  "model": "core.livro",
+  "pk": 1,
+  "fields": {
+    "titulo": "Drácula",
+    "autor": 1,
+    "genero": 2,
+    "quantidade": 1,
+    "sinopse": "",
+    "capa": "capas/61MgodE1s0L._AC_UF10001000_QL80_.jpg",
+    "data_cadastro": "2026-06-12T22:28:04.926Z",
+    "conteudo_explicito": false
+  }
+},
+{
+  "model": "core.livro",
+  "pk": 2,
+  "fields": {
+    "titulo": "Harry Potter e as Relíquias da Morte",
+    "autor": 2,
+    "genero": 3,
+    "quantidade": 1,
+    "sinopse": "",
+    "capa": "capas/4164092.jpg",
+    "data_cadastro": "2026-06-12T22:28:50.921Z",
+    "conteudo_explicito": false
+  }
+},
+{
+  "model": "core.livro",
+  "pk": 3,
+  "fields": {
+    "titulo": "As Aventuras de Sherlock Holmes",
+    "autor": 3,
+    "genero": 4,
+    "quantidade": 1,
+    "sinopse": "",
+    "capa": "capas/71pUxLqTOAL.jpg",
+    "data_cadastro": "2026-06-12T22:29:57.521Z",
+    "conteudo_explicito": false
+  }
+}
+]

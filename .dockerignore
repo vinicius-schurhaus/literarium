@@ -1,0 +1,34 @@
+# Segredos — nunca dentro da imagem
+.env
+
+# Controle de versão / IDE
+.git
+.gitignore
+.vscode
+.idea
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Banco e mídia locais
+db.sqlite3
+media/
+media_data/
+staticfiles/
+
+# Frontend: o build é feito dentro da imagem (estágio Node do Dockerfile).
+# Mandamos o código-fonte, mas não artefatos pesados/gerados.
+frontend/node_modules/
+frontend/dist/
+frontend/coverage/
+
+# Testes / cobertura
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.coveragerc

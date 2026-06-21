@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colégio Ideologia — laranja institucional */
+  --color-primary: #F08028;
+  --color-primary-foreground: #ffffff;
+  --color-accent-foreground: #D83135;
+
+  /* Gradiente de destaque */
+  --gradient-highlight: linear-gradient(270deg, #F79633 0%, #D83135 100%);
+
+  /* Azul-marinho — modo gestão */
+  --color-navy: #15294E;
+  --color-navy-foreground: #ffffff;
+
+  /* Status */
+  --color-success: #16A34A;
+  --color-destructive: #DC2626;
+  --color-destructive-foreground: #ffffff;
+
+  /* Superfícies — interface clara fixa */
+  --color-background: #ffffff;
+  --color-foreground: #1A1A1A;
+  --color-card: #ffffff;
+  --color-card-foreground: #1A1A1A;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #1A1A1A;
+  --color-muted: #F5F5F5;
+  --color-muted-foreground: #555555;
+  --color-border: #E0E0E0;
+  --color-input: #E0E0E0;
+  --color-ring: #F08028;
+  --color-secondary: #F5F5F5;
+  --color-secondary-foreground: #1A1A1A;
+  --color-accent: #FFF0E3;
+
+  --radius: 0.5rem;
+}
+
+@layer base {
+  h1 {
+    font-size: 32px !important;
+    font-weight: bold;
+  }
+  * {
+    box-sizing: border-box;
+    border-color: var(--color-border);
+  }
+  body {
+    margin: 0;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  #root {
+    min-height: 100vh;
+  }
+}
+
+/* Gradiente de destaque */
+.bg-gradient-highlight {
+  background: var(--gradient-highlight);
+}
+
+/* Scroll suave nas prateleiras */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

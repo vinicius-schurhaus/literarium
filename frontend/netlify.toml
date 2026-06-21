@@ -1,0 +1,14 @@
+# Configuração de deploy do frontend no Netlify.
+# Lembre de definir VITE_API_URL em Site settings > Environment variables
+# apontando para o backend (ex.: https://seuusuario.pythonanywhere.com/api).
+
+[build]
+  base = "frontend"
+  command = "npm run build"
+  publish = "dist"
+
+# Redirecionamento de SPA: qualquer rota cai no index.html (React Router).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

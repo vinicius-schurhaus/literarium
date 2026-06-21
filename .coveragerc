@@ -1,0 +1,17 @@
+[run]
+source = core
+branch = True
+omit =
+    */migrations/*
+    */tests/*
+    */__pycache__/*
+    manage.py
+
+[report]
+show_missing = True
+skip_covered = False
+exclude_lines =
+    pragma: no cover
+    def __str__
+    if __name__ == .__main__.:
+    raise NotImplementedError
